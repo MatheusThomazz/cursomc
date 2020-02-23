@@ -1,7 +1,9 @@
 package com.thomaz.cursomc;
 
 import com.thomaz.cursomc.domain.Categoria;
+import com.thomaz.cursomc.domain.Produto;
 import com.thomaz.cursomc.repositories.CategoriaRepository;
+import com.thomaz.cursomc.repositories.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -15,6 +17,8 @@ public class CursomcApplication implements CommandLineRunner{
 
 	@Autowired
 	CategoriaRepository categoriaRepository;
+	@Autowired
+	ProdutoRepository produtoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
@@ -26,6 +30,18 @@ public class CursomcApplication implements CommandLineRunner{
 		Categoria cat1 = new Categoria(null,"Informatica");
 		Categoria cate2 = new Categoria(null,"Escritorio");
 
+		Produto p1 = new Produto(null, "Computador", 2000.00);
+		Produto p2 = new Produto(null, "Impressora", 800.00);
+		Produto p3 = new Produto(null, "Mouse", 80.00);
+
+		cat1.getProdutos().addAll(Arrays.asList(p1, p2, p3));
+		cate2.getProdutos().addAll(Arrays.asList(p2));
+
+		p1.getCategorias().addAll(Arrays.asList(cat1));
+		p2.getCategorias().addAll(Arrays.asList(cat1, cate2));
+		p3.getCategorias().addAll(Arrays.asList(cat1));
+
 		categoriaRepository.saveAll(Arrays.asList(cat1, cate2));
+		produtoRepository.saveAll((Arrays.asList(p1, p2, p3)));
 	}
 }
